@@ -242,10 +242,16 @@
 
   ctx.save();
   ctx.strokeStyle = "#ff00aa"; 
-  ctx.lineWidth = 1.8; 
-  ctx.shadowBlur = 12; 
-  ctx.shadowColor = "#ff00aa";
   
+  // If timer is suspended (human present), use a stable, calm line.
+  // If nobody is present (idle), create the rapid electrical flickering crackle loop.
+  const electricSurge = isTimerSuspended ? 0 : Math.random();
+  
+  ctx.lineWidth = 1.2 + (electricSurge * 1.8); 
+  ctx.shadowBlur = 10 + (electricSurge * 12); 
+  ctx.shadowColor = "#ff00aa";
+  ctx.globalAlpha = 0.8 + (electricSurge * 0.2);
+
   ctx.beginPath();
   for (let i = 0; i < spherePoints3D.length; i++) {
    for (let j = i + 1; j < spherePoints3D.length; j++) {
