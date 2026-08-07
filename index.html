@@ -18,7 +18,7 @@
  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
  margin: 0; padding: 10px; box-sizing: border-box;
  height: 100vh; display: flex; flex-direction: column; overflow: hidden;
- border: 2px solid var(--green); transition: border-color 0.2s ease, box-shadow 0.2s ease;
+ border: 2px solid var(--pink); transition: border-color 0.2s ease, box-shadow 0.2s ease;
  }
  body.alarm-active { 
  border-color: var(--pink) !important;
@@ -420,16 +420,11 @@
    }
   }
 
-  // DYNAMIC COLOR MECHANICS: Snaps to fluoro green when hovering a link, uses shocking pink otherwise
-  // DYNAMIC THREE-STAGE COLOR ENGINE
   ctx.save();
-  
-  // 1. Determine line color: Neon Blue (#00f0ff) on node hover, Fluorescent Green (#00ffaa) otherwise
-  let electricColor = "#00ffaa"; // Default stage 1 & 2
-  if (isHoveringNode) {
-   electricColor = "#00f0ff"; // Stage 3: Snap to Neon Blue when a cube point link is touched!
-  }
+  const electricColor = isHoveringNode ? "#00ffaa" : "#ff00aa"; 
   ctx.strokeStyle = electricColor; 
+  
+  // Electrical surge runs only when nobody is present (timer not suspended)
   
   // 2. Electrical crackle logic matches your presence variables
   const electricSurge = isTimerSuspended ? 0 : Math.random();
@@ -519,6 +514,18 @@
   if (canvas) {
    ctx = canvas.getContext("2d"); adaptCanvasLimits();
    requestAnimationFrame(executeMatrixRenderLoop);
+
+  canvas.addEventListener("click", (event) => {
+    if (loadingOverlayActive) return;
+    const rect = canvas.getBoundingClientRect();
+    const mX = event.clientX - rect.left, mY = event.clientY - rect.top;
+    
+    for (let node of nodePositions) {
+     if (Math.hypot(mX - node.x, mY - node.y) <= node.radius) {
+      triggerTerminalJump(node.path); break;
+     }
+    }
+   });
    
   // Update mouse position coordinates continuously on canvas movement
   canvas.addEventListener('mousemove', (event) => {
