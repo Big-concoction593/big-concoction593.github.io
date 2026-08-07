@@ -299,14 +299,14 @@
  function executeMatrixRenderLoopElectric(timestamp) {
   if (!ctx || !canvas) return;
   
-  ctx.fillStyle = "rgba(2, 2, 5, 1)"; // Keep canvas clean without leaving marks
+  ctx.fillStyle = "rgba(2, 2, 5, 0.75)"; // Keep canvas clean without leaving marks
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   
   renderBackgroundFadersAndBlueprints(timestamp);
   
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
-  const orbScaleRadius = Math.min(centerX, centerY) * 0.55;
+  const orbScaleRadius = Math.min(centerX, centerY) * 0.85;
   const visualPerspectiveFocalDepth = 3; 
 
   nodePositions = [];
@@ -389,7 +389,7 @@
  function executeMatrixRenderLoop(timestamp) {
   if (!ctx || !canvas) return;
   
-  ctx.fillStyle = "rgba(2, 2, 5, 1)"; // Keep canvas clean without leaving marks
+  ctx.fillStyle = "rgba(2, 2, 5, 1)"; 
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   
   renderBackgroundFadersAndBlueprints(timestamp);
@@ -402,7 +402,6 @@
   nodePositions = [];
   spherePoints3D.forEach(pt => rotate3DNodePoint(pt, angleX, angleY));
 
-  // HOVER DETECTION MODIFIER: Check if mouse is over any active node bounding zone
   isHoveringNode = false;
   if (!loadingOverlayActive) {
    for (let i = 0; i < spherePoints3D.length; i++) {
@@ -412,7 +411,6 @@
     const drawY = pt.y * orbScaleRadius * depthPerspective + centerY;
     const targetNodeRadius = 6 * depthPerspective;
     
-    // Check if mouse coordinates fall inside the node selection circle pad
     if (Math.hypot(mouseX - drawX, mouseY - drawY) <= targetNodeRadius + 12) {
      isHoveringNode = true;
      break;
@@ -420,20 +418,26 @@
    }
   }
 
+  // FIXED: Replaced CSS var strings with direct hex strings so HTML5 Canvas can read them!
   ctx.save();
-  const electricColor = isHoveringNode ? "#00ffaa" : "#ff00aa"; 
-  ctx.strokeStyle = electricColor; 
+  let electricColor = "#ff00aa"; // Stage 1: Unattended Red / Shocking Pink
   
-  // Electrical surge runs only when nobody is present (timer not suspended)
+  if (isTimerSuspended) {
+   electricColor = "#00ffaa"; // Stage 2: Mouse moves -> Snaps to Fluorescent Green
+   if (isHoveringNode) {
+    electricColor = "#00f0ff"; // Stage 3: Hovering a link -> Snaps to Neon Blue
+   }
+  }
   
-  // 2. Electrical crackle logic matches your presence variables
+  ctx.strokeStyle = electricColor;
+  
+  // Electrical crackle triggers ONLY when idle (nobody present)
   const electricSurge = isTimerSuspended ? 0 : Math.random();
-  
   ctx.lineWidth = 1.2 + (electricSurge * 1.8); 
   ctx.shadowBlur = 10 + (electricSurge * 12); 
-  ctx.shadowColor = electricColor; // Glow matches the current active stage color perfectly
+  ctx.shadowColor = electricColor;
   ctx.globalAlpha = 0.8 + (electricSurge * 0.2);
-
+  
   ctx.beginPath();
   for (let i = 0; i < spherePoints3D.length; i++) {
    for (let j = i + 1; j < spherePoints3D.length; j++) {
@@ -445,10 +449,8 @@
    }
   }
   ctx.stroke();
-  ctx.restore();
+  ctx.restore(); 
 
-
-  // Render individual Clickable Application Nodes
   spherePoints3D.forEach((point) => {
    const depthPerspective = visualPerspectiveFocalDepth / (visualPerspectiveFocalDepth - point.z);
    const drawX = point.x * orbScaleRadius * depthPerspective + centerX;
@@ -458,8 +460,8 @@
    nodePositions.push({ x: drawX, y: drawY, radius: targetNodeRadius + 12, path: point.app.path });
 
    ctx.save();
-   // The node dots can also share the hover color reaction or keep their custom states
-   ctx.fillStyle = point.app.name === "Plato Fields" ? "var(--green)" : "var(--pink)";
+   // Nodes preserve their default green/pink states or follow style rules
+   ctx.fillStyle = point.app.name === "Plato Fields" ? "#00ffaa" : "#ff00aa";
    ctx.shadowBlur = point.z > 0 ? 10 : 0;
    ctx.shadowColor = ctx.fillStyle;
    
@@ -476,8 +478,7 @@
   });
 
   requestAnimationFrame(executeMatrixRenderLoop);
- }
- 
+ } 
  
  function adaptCanvasLimits() {
   const container = document.getElementById("canvas-viewport-container");
@@ -576,7 +577,7 @@
  document.addEventListener("DOMContentLoaded", initPortalEngine);
 </script>
   <header style="border-top: 1px solid var(--yellow); border-bottom: none; padding-top: 4px; padding-bottom: 0; margin-top: 8px; margin-bottom: 0;">
-    <div style="font-family: monospace; letter-spacing: 12px;font-size: 0.75rem; color: var(--green);"><h1>E  x  i  s t e n z .  .    .    . d i g i t a l . . . ... | . P . L . A . T . O .</h1></div>
+    <div style="font-family: monospace; letter-spacing: 12px;font-size: 0.75rem; color: var(--green);"><h3>E  x  i  s t e n z .  .    .    . d i g i t a l . . . ... | . P . L . A . T . O .</h311111111111></div>
     <div id="countdown-status-node" style="font-family: monospace; font-size: 0.75rem; color: var(--pink);">T I M E   I S   I N V I N C I B L E</div>
   </header>
 
