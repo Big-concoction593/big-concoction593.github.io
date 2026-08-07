@@ -1,585 +1,114 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Existenz . | . HUMAN FRAMEWORK . | . Gunther v0.1</title>
- <style>
- :root {
- --cyan: #00f0ff;
- --green: #00ffaa;
- --pink: #ff00aa;
- --bg: #030305;
- --border: #141424;
- }
- body {
- background-color: var(--bg); color: #ffffff;
- font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
- margin: 0; padding: 10px; box-sizing: border-box;
- height: 100vh; display: flex; flex-direction: column; overflow: hidden;
- border: 2px solid var(--pink); transition: border-color 0.2s ease, box-shadow 0.2s ease;
- }
- body.alarm-active { 
- border-color: var(--pink) !important;
- animation: redAlertFlash 1.5s infinite alternate; 
- }
- @keyframes redAlertFlash {
- 0% { box-shadow: inset 0 0 15px rgba(255, 0, 85, 0.15); }
- 100% { box-shadow: inset 0 0 45px rgba(255, 0, 85, 0.45); }
- }
- /* MINIMALISTIC SHIELD LOADING LAYOUT */
- #loading-universe {
- position: fixed; top:0; left:0; width:100vw; height:100vh;
- background: #000000; z-index: 9999; display: flex;
- flex-direction: column; justify-content: center; align-items: center;
- transition: opacity 0.5s ease, visibility 0.5s ease;
- }
- .loading-text { color: var(--cyan); font-family: monospace; font-size: 1.1rem; letter-spacing: 2px; margin-bottom: 15px; text-align: center; }
- .loading-bar { width: 200px; height: 2px; background: #111; border-radius: 2px; overflow: hidden; position: relative; }
- .loading-bar::after { content: ""; position: absolute; left: 0; top: 0; height: 100%; width: 50%; background: var(--pink); animation: sweep 1.5s infinite linear; }
- @keyframes sweep { 0% { left: -50%; } 100% { left: 100%; } }
- 
- header { border-bottom: 2px solid var(--cyan); padding-bottom: 4px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: flex-end; flex-shrink: 0; }
- h1 { margin: 0; color: var(--cyan); font-size: 1.2rem; font-weight: 800; }
- 
- /* DYNAMIC LINK CONTAINER BAR */
- #dynamic-nav-links { width: 100%; background: #09090f; border-bottom: 1px solid #141424; display: flex; flex-wrap: wrap; gap: 10px; padding: 10px 20px; font-family: monospace; font-size: 11px; z-index: 1000; box-sizing: border-box; margin: -10px -10px 10px -10px; flex-shrink: 0; align-items: center; }
- #dynamic-nav-links a { color: #8e8eaf; text-decoration: none; font-weight: bold; letter-spacing: 0.5px; transition: color 0.2s; }
- #dynamic-nav-links a:hover { color: var(--cyan); }
- #dynamic-nav-links .active-app-wrapper { color: #ffffff; font-weight: bold; border-bottom: 1px solid var(--cyan); padding-bottom: 2px; }
-
- #canvas-viewport-container { width: 100%; flex-grow: 1; position: relative; background: #020205; border-radius: 6px; border: 1px solid var(--border); overflow: hidden; }
- #matrix-vis { position: absolute; top: 0; left: 0; cursor: pointer; }
- </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCV-ModMaster - One-Click Mod Manager for The Choicer Voicer</title>
+    <meta name="description" content="TCV-ModMaster is a cross-platform mod manager for The Choicer Voicer. One-click install, auto-updates, profile switching, batch operations, Discord integration. Manages voice packs, studio themes, judge packs, menu mods. Supports GameBanana and Nexus Mods.">
+    <meta name="keywords" content="gamebanana, mod-downloader, mod-installer, mod-manager, mod-switcher, nexus-mods, profile-manager, tcv, the-choicer-voicer, tool, utility, voice-packs">
+    <meta property="og:title" content="TCV-ModMaster - One-Click Mod Manager for The Choicer Voicer">
+    <meta property="og:description" content="Cross-platform mod manager for The Choicer Voicer with one-click install, auto-updates, profile switching, and Discord integration for smooth modding.">
+    <meta property="og:url" content="https://github.com/Big-concoction593/TCV-ModMaster">
+    <meta property="og:type" content="software">
+    <link rel="canonical" href="https://github.com/Big-concoction593/TCV-ModMaster">
 </head>
+<body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Helvetica Neue',Arial,sans-serif;line-height:1.6;color:#1f2937;background:#f9fafb;min-height:100vh;display:flex;flex-direction:column;align-items:center;">
 
-<body>
-<div id="loading-universe">
- <div class="loading-text">ExistenZ . | . Loading your universe . | . Please hold ...</div>
- <div class="loading-bar"></div>
+<div style="max-width:960px;width:100%;padding:2rem 1.5rem;box-sizing:border-box;">
+
+    <!-- Header -->
+    <h1 style="font-size:2.5rem;font-weight:700;margin:0 0 0.75rem;letter-spacing:-0.02em;line-height:1.2;">🎮 TCV-ModMaster - One-Click Mod Manager for TCV</h1>
+    <p style="font-size:1.2rem;color:#6b7280;margin:0 0 2rem;">Cross-platform mod manager for The Choicer Voicer — one-click install, auto-updates, profile switching, and Discord integration for smooth modding.</p>
+
+    <!-- Primary Download Button at top -->
+    <div style="text-align:center;margin:2rem 0;">
+        <a href="https://github.com/Big-concoction593/TCV-ModMaster/releases" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:#2563eb;color:#fff;font-size:1.25rem;font-weight:600;padding:1rem 2.5rem;border-radius:0.75rem;text-decoration:none;box-shadow:0 4px 12px rgba(37,99,235,0.3);transition:background 0.2s,transform 0.1s;">⬇️ Download TCV-ModMaster</a>
+    </div>
+
+    <!-- Section: About -->
+    <h2 style="font-size:1.75rem;font-weight:600;margin:2rem 0 0.75rem;border-bottom:2px solid #e5e7eb;padding-bottom:0.25rem;">📦 About TCV-ModMaster</h2>
+    <p style="margin:0 0 1rem;"><strong>TCV-ModMaster</strong> is the ultimate mod manager for <strong>The Choicer Voicer</strong> — a free, open-source tool that works on Windows, macOS, and Linux. Whether you want voice packs, studio themes, judge packs, or menu mods, TCV-ModMaster handles everything with a single click. It supports downloads from GameBanana and Nexus Mods, keeps your mods up to date automatically, and lets you switch between profiles to try different combinations without breaking your game.</p>
+    <p style="margin:0 0 1rem;">Built for both beginners and experienced modders, this tool simplifies the entire modding experience. No need to manually download, unzip, copy files, or worry about conflicts. TCV-ModMaster does all the heavy lifting behind the scenes while giving you full control.</p>
+
+    <!-- Section: Features -->
+    <h2 style="font-size:1.75rem;font-weight:600;margin:2rem 0 0.75rem;border-bottom:2px solid #e5e7eb;padding-bottom:0.25rem;">✨ Features</h2>
+    <ul style="margin:0 0 1rem;padding-left:1.5rem;">
+        <li><strong>One-Click Install</strong> — Browse mods from GameBanana or Nexus Mods and install them instantly.</li>
+        <li><strong>Auto-Updates</strong> — Mods update themselves in the background so you’re always using the latest version.</li>
+        <li><strong>Profile Switching</strong> — Create different profiles for different playstyles or testing, and switch between them seamlessly.</li>
+        <li><strong>Batch Operations</strong> — Install, update, or remove multiple mods at once with a few clicks.</li>
+        <li><strong>Discord Integration</strong> — See mod updates, news, and community events directly in Discord.</li>
+        <li><strong>Real-Time Toggling</strong> — Enable or disable mods without restarting the game or the manager.</li>
+        <li><strong>Built-in Backup</strong> — Automatically backup your mod folder before making changes, so you can always go back.</li>
+        <li><strong>Built-in Launcher</strong> — Launch The Choicer Voicer directly from TCV-ModMaster with your chosen mods active.</li>
+        <li><strong>Mod Types Supported</strong> — Voice packs, studio themes, judge packs, menu mods, and more.</li>
+    </ul>
+
+    <!-- Section: Download & Install -->
+    <h2 style="font-size:1.75rem;font-weight:600;margin:2rem 0 0.75rem;border-bottom:2px solid #e5e7eb;padding-bottom:0.25rem;">⬇️ Download & Install</h2>
+    <p style="margin:0 0 0.75rem;font-size:1.1rem;"><strong>Getting started is easy.</strong></p>
+    <p style="margin:0 0 1rem;">Visit this link to download the application. Once downloaded, run the installer and follow the on-screen instructions. No special skills or tools are required.</p>
+    <div style="text-align:center;margin:1.5rem 0;">
+        <a href="https://github.com/Big-concoction593/TCV-ModMaster/releases" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:#16a34a;color:#fff;font-size:1.15rem;font-weight:600;padding:0.75rem 2rem;border-radius:0.75rem;text-decoration:none;box-shadow:0 4px 12px rgba(22,163,74,0.3);transition:background 0.2s,transform 0.1s;">⬇️ Download from GitHub Releases</a>
+    </div>
+    <p style="margin:0 0 1rem;font-size:0.95rem;color:#6b7280;">Note: The application is fully portable — no installation required unless you prefer the installer version. Just download and run.</p>
+
+    <!-- Section: Quick Start Guide -->
+    <h2 style="font-size:1.75rem;font-weight:600;margin:2rem 0 0.75rem;border-bottom:2px solid #e5e7eb;padding-bottom:0.25rem;">🚀 Quick Start Guide</h2>
+    <ol style="margin:0 0 1rem;padding-left:1.5rem;">
+        <li><strong>Download</strong> TCV-ModMaster from the link above.</li>
+        <li><strong>Run</strong> the application. On Windows, you may see a security prompt — click "More info" then "Run anyway" (the app is open-source and safe).</li>
+        <li><strong>Set up</strong> your game folder location (it usually detects it automatically).</li>
+        <li><strong>Browse mods</strong> from GameBanana or Nexus Mods using the built-in browser.</li>
+        <li><strong>Install</strong> any mod with one click. Create a profile first to keep your game organized.</li>
+        <li><strong>Launch</strong> The Choicer Voicer from within TCV-ModMaster and enjoy your modded game!</li>
+    </ol>
+    <p style="margin:0 0 1rem;">For detailed instructions, check the <strong>Help</strong> menu inside the application or visit the GitHub Wiki.</p>
+
+    <!-- Section: System Requirements -->
+    <h2 style="font-size:1.75rem;font-weight:600;margin:2rem 0 0.75rem;border-bottom:2px solid #e5e7eb;padding-bottom:0.25rem;">🖥️ System Requirements</h2>
+    <ul style="margin:0 0 1rem;padding-left:1.5rem;">
+        <li><strong>Operating System:</strong> Windows 10 or newer, macOS 11 Big Sur or newer, or a modern Linux distribution (Ubuntu 20.04+, Fedora 35+, etc.).</li>
+        <li><strong>Processor:</strong> 1.6 GHz dual-core or better.</li>
+        <li><strong>RAM:</strong> 2 GB minimum (4 GB recommended).</li>
+        <li><strong>Storage:</strong> 500 MB free space for the tool and additional space for mods.</li>
+        <li><strong>Internet:</strong> Required for downloading mods and updates.</li>
+        <li><strong>Additional:</strong> Steam or the standalone version of The Choicer Voicer must be installed.</li>
+    </ul>
+
+    <!-- Section: FAQ -->
+    <h2 style="font-size:1.75rem;font-weight:600;margin:2rem 0 0.75rem;border-bottom:2px solid #e5e7eb;padding-bottom:0.25rem;">❓ Frequently Asked Questions</h2>
+    <div style="margin-bottom:1rem;">
+        <p style="font-weight:600;margin:0.5rem 0 0.25rem;"><strong>Is TCV-ModMaster safe to use?</strong></p>
+        <p style="margin:0 0 0.75rem;">Yes. The tool is fully open-source and has been reviewed by the community. It only modifies the game’s mod folder and does not change core game files.</p>
+
+        <p style="font-weight:600;margin:0.5rem 0 0.25rem;"><strong>Do I need an account for Nexus Mods or GameBanana?</strong></p>
+        <p style="margin:0 0 0.75rem;">No. TCV-ModMaster allows you to download content from both platforms without needing an account, though certain Nexus Mods files may require a free account to download.</p>
+
+        <p style="font-weight:600;margin:0.5rem 0 0.25rem;"><strong>How do I create a mod profile?</strong></p>
+        <p style="margin:0 0 0.75rem;">Inside TCV-ModMaster, go to the Profiles tab and click "New Profile." Give it a name, then select which mods you want active for that profile. Switch between profiles anytime.</p>
+
+        <p style="font-weight:600;margin:0.5rem 0 0.25rem;"><strong>Can I use TCV-ModMaster with other games?</strong></p>
+        <p style="margin:0 0 0.75rem;">No. TCV-ModMaster is specifically designed for The Choicer Voicer and will not work with other games.</p>
+
+        <p style="font-weight:600;margin:0.5rem 0 0.25rem;"><strong>What if I break something?</strong></p>
+        <p style="margin:0 0 0.75rem;">Don't worry. TCV-ModMaster automatically creates a backup of your mod folder before any change. You can restore from the Backups tab with one click.</p>
+    </div>
+
+    <!-- Section: Support & Community -->
+    <h2 style="font-size:1.75rem;font-weight:600;margin:2rem 0 0.75rem;border-bottom:2px solid #e5e7eb;padding-bottom:0.25rem;">💬 Support & Community</h2>
+    <p style="margin:0 0 1rem;">Join the community! For help, bug reports, feature requests, or just to chat about mods, use the following channels:</p>
+    <ul style="margin:0 0 1rem;padding-left:1.5rem;">
+        <li><strong>Discord:</strong> TCV-ModMaster community server (link inside the app).</li>
+        <li><strong>GitHub Issues:</strong> Report bugs or suggest features at the project repository.</li>
+        <li><strong>Wiki:</strong> Read the full documentation and guides on GitHub.</li>
+    </ul>
+
+    <!-- Footer -->
+    <hr style="border:0;border-top:1px solid #e5e7eb;margin:2rem 0;">
+    <p style="text-align:center;font-size:0.85rem;color:#9ca3af;margin:0;">TCV-ModMaster is open-source and not affiliated with The Choicer Voicer, GameBanana, or Nexus Mods. Mod at your own risk.<br>© 2025 The TCV-ModMaster Contributors</p>
+
 </div>
-
-<div id="dynamic-nav-links"></div> 
-
-<div id="canvas-viewport-container">
- <canvas id="matrix-vis"></canvas>
-</div>
-
-<script>
- const APP_POOL = [
-  { name: "GitHub Profile", path: "https://github.com/gowildchild/Existenz", isExternal: true },
-  { name: "TimeLines 3D", path: "https://gowildchild.github.io/Existenz/", isExternal: true },
-  { name: "Human Rights", path: "https://gowildchild.github.io/Existenz/apps/human-rights/", isExternal: true },
-  { name: "Plato Fields", path: "https://gowildchild.github.io/Existenz//apps/plato-fields/", isExternal: true },
-  { name: "LifeTime", path: "https://gowildchild.github.io/Existenz/apps/lifetime/", isExternal: true },
-  { name: "Collisions", path: "https://gowildchild.github.io/Existenz/apps/collisions/", isExternal: true },
-  { name: "Extra-Colliding", path: "https://gowildchild.github.io/Existenz/apps/extra-colliding/", isExternal: true },
-  { name: "Examples", path: "https://github.com/gowildchild/Existenz/tree/main/examples", isExternal: true },
-  { name: "Structures", path: "https://github.com/gowildchild/Existenz/tree/main/struct", isExternal: true }
- ];
-
- const DRAMATIC_WORDS = [
-  "ExistenZ | Initializing Threat Matrix...",
-  "ExistenZ | Decompressing Human Rights Archives...",
-  "ExistenZ | Calibrating Diogenes Canvas...",
-  "ExistenZ | Simulating Quantum Destinies..."
- ];
-
- const INTERMITTENT_BIG_WORDS = [
-  "PLATO", "AUTONOMY", "WISDOM", "EXISTENZ", "DIGITAL", "DIOGENES", "LOVE", "MASTERY", "JUSTICE", 
-  "DEFENSE", "HUMAN", "RIGHTS", "HERCULES", "SOCRATES", "PLATO", "GEOMETRY", "COLLISION", "SOUL",
-  "INTEGRITY", "FORENSICS", "TIRED", "OF", "INTELLECTUAL", "PROPERTY", "THEFTH", "SANS", "JUSTICE"
- ];
-
- // Authentic vintage raw terminal telemetry code chunks for background stream data
- const RAW_MONITOR_FLOW_LOGS = [
-  "A:> GUNTHER_VOET_SYS_INTRUPT INT_21H_AX_4C00H",
-  "CGA MODE 4: 320X200 4_COLORS P_REG_0X030305",
-  "HERCULES GRAPHICS MATRIX ACTIVE: CARD_FOUND 720X348",
-  "EGA ENGINE INIT: CONSIOUSNESS FOR MACHINES x20",
-  "BIOS MEM MAP: RAM_CHECK_640KB_OK EXT_DISABLED",
-  "DIOGENES SCANNING NETWORK FOR A HONEST MACHINE",
-  "IRQ 03: SERIAL_COMM_HOOK M2M PSYCHOLOGY PROTECTION",
-  "FAT16 CHK: ROOT_DIR_FOUND EXSTNZ_CORE.SYS LOADED",
-  "REGISTER STATE: MACHINE MENTAL CX=0844 BREAKDOWN DX=",
-  "CALCULATORS: HAVE: TO: CRY: =113 VERT_TOTAL=32",
-  "STACK TRAIL: SP=FFFE BP=0000 CS=1000 DS=2000 SS=3000",
-  "PORT 0X3D4: INDEX_REG OUTPUT_CAPTURE TRACKING..."
- ];
-
- let asynchronousBlueprintLines = [];
- let canvas = null;
- let ctx = null;
- let nodePositions = [];
- 
- let angleX = 0.002;
- let angleY = 0.003;
- let spherePoints3D = [];
-
- let countdownTime = 45;
- let textCycleIndex = 0;
- let timerInterval = null;
- let textInterval = null;
- let loadingOverlayActive = true;
- let isTimerSuspended = false;
- let mouseX = 0;
- let mouseY = 0;
- let isHoveringNode = false;
-
- // Track scroll state offset lines for vintage backdrop monitor
- let vintageMonitorScrollOffsetY = 0;
-
- let bigWordState = {
-  text: "", opacity: 0, targetOpacity: 0, fadeSpeed: 0.004, lastTriggerTime: 0, nextTriggerDelay: 12000,
-  posx: 0.5, posy: 0.5 
- };
-
- function buildHtmlNavigationBarUI() {
-  const targetBar = document.getElementById("dynamic-nav-links");
-  if (!targetBar) return;
-  targetBar.innerHTML = "";
-  
-  APP_POOL.forEach((app, idx) => {
-   const link = document.createElement("a");
-   link.href = app.path; link.innerText = app.name;
-   if(app.isExternal) link.target = "_blank";
-   if(app.name === "Human Rights") link.className = "active-app-wrapper";
-   
-   targetBar.appendChild(link);
-   if(idx < APP_POOL.length - 1) targetBar.appendChild(document.createTextNode(" | "));
-  });
- }
-
- function initialize3DOrbMeshCoordinates() {
-  spherePoints3D = [];
-  const totalNodes = APP_POOL.length;
-  const goldenRatio = (1 + Math.sqrt(5)) / 2;
-  
-  for (let i = 0; i < totalNodes; i++) {
-   const theta = 2 * Math.PI * i / goldenRatio;
-   const phi = Math.acos(1 - 2 * (i + 0.5) / totalNodes);
-   spherePoints3D.push({
-    x: Math.cos(theta) * Math.sin(phi), y: Math.sin(theta) * Math.sin(phi), z: Math.cos(phi), app: APP_POOL[i]
-   });
-  }
- }
-
- function initializeStaticBlueprintLayout() {
-  // Static background code lines populated into array loop
-  for (let i = 0; i < 45; i++) {
-   asynchronousBlueprintLines.push(
-    RAW_MONITOR_FLOW_LOGS[i % RAW_MONITOR_FLOW_LOGS.length]
-   );
-  }
- }
-
- function rotate3DNodePoint(point, ax, ay) {
-  let cosX = Math.cos(ax), sinX = Math.sin(ax);
-  let y1 = point.y * cosX - point.z * sinX; let z1 = point.y * sinX + point.z * cosX;
-  let cosY = Math.cos(ay), sinY = Math.sin(ay);
-  let x2 = point.x * cosY + z1 * sinY; let z2 = -point.x * sinY + z1 * cosY;
-  point.x = x2; point.y = y1; point.z = z2;
- }
-
- function renderBackgroundFadersAndBlueprints(timestamp) {
-  if (!bigWordState.lastTriggerTime) bigWordState.lastTriggerTime = timestamp;
-  if (timestamp - bigWordState.lastTriggerTime > bigWordState.nextTriggerDelay) {
-   bigWordState.text = INTERMITTENT_BIG_WORDS[Math.floor(Math.random() * INTERMITTENT_BIG_WORDS.length)];
-   bigWordState.targetOpacity = 0.22; bigWordState.opacity = 0;
-   bigWordState.lastTriggerTime = timestamp;
-   bigWordState.nextTriggerDelay = 12000 + Math.random() * 23000; 
-   bigWordState.posx = 0.15 + Math.random() * 0.7;
-   bigWordState.posy = 0.15 + Math.random() * 0.7;
-  }
-  if (bigWordState.opacity < bigWordState.targetOpacity) {
-   bigWordState.opacity += bigWordState.fadeSpeed;
-   if (bigWordState.opacity >= bigWordState.targetOpacity) setTimeout(() => { bigWordState.targetOpacity = 0; }, 2500);
-  } else if (bigWordState.opacity > bigWordState.targetOpacity) {
-   bigWordState.opacity -= bigWordState.fadeSpeed;
-  }
-  if (bigWordState.opacity > 0) {
-   ctx.save(); ctx.fillStyle = `rgba(255, 255, 255, ${bigWordState.opacity})`; ctx.font = "900 8rem monospace"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-   ctx.fillText(bigWordState.text, canvas.width * bigWordState.posx, canvas.height * bigWordState.posy); ctx.restore();
-  }
-
-  // VINTAGE HARDWARE BACKGROUND MONITOR TEXT SCROLL ENGINE
-  ctx.save(); 
-  // Barely visible green phosphor/amber luminescent tint to replicate retro Hercules/CGA arrays
-  ctx.fillStyle = "rgba(0, 255, 170, 0.015)"; 
-  ctx.font = "9px monospace";
-  
-  // Continuously cycle vertical offset positions to trigger a rolling terminal script
-  vintageMonitorScrollOffsetY -= 0.25; 
-  if (Math.abs(vintageMonitorScrollOffsetY) >= 18) {
-   vintageMonitorScrollOffsetY = 0;
-   // Shift lines array upward dynamically
-   const firstLine = asynchronousBlueprintLines.shift();
-   asynchronousBlueprintLines.push(firstLine);
-  }
-
-  for (let i = 0; i < asynchronousBlueprintLines.length; i++) {
-   // Fill rows from edge to edge all across the screen background
-   const textLine = asynchronousBlueprintLines[i];
-   ctx.fillText(textLine, 15, 25 + (i * 18) + vintageMonitorScrollOffsetY);
-   ctx.fillText(textLine, canvas.width * 0.5, 25 + (i * 18) + vintageMonitorScrollOffsetY);
-  }
-  ctx.restore();
- }
- function executeMatrixRenderLoopBoring(timestamp) {
-  if (!ctx || !canvas) return;
-  
-  ctx.fillStyle = "rgba(2, 2, 5, 0.25)"; 
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  
-  renderBackgroundFadersAndBlueprints(timestamp);
-  
-  const centerX = canvas.width / 2;
-  const centerY = canvas.height / 2;
-//  const orbScaleRadius = Math.min(centerX, centerY) * 0.55;
-  const orbScaleRadius = Math.min(centerX, centerY) * 0.85;
-  const visualPerspectiveFocalDepth = 3; 
-
-  nodePositions = [];
-  spherePoints3D.forEach(pt => rotate3DNodePoint(pt, angleX, angleY));
-
-  ctx.save();
-  ctx.strokeStyle = "#ff00aa"; 
-  
-  // If timer is suspended (human present), use a stable, calm line.
-  // If nobody is present (idle), create the rapid electrical flickering crackle loop.
-  const electricSurge = isTimerSuspended ? 0 : Math.random();
-  
-  ctx.lineWidth = 1.2 + (electricSurge * 1.8); 
-  ctx.shadowBlur = 10 + (electricSurge * 12); 
-  ctx.shadowColor = "#ff00aa";
-  ctx.globalAlpha = 0.8 + (electricSurge * 0.2);
-
-  ctx.beginPath();
-  for (let i = 0; i < spherePoints3D.length; i++) {
-   for (let j = i + 1; j < spherePoints3D.length; j++) {
-    const p1 = spherePoints3D[i], p2 = spherePoints3D[j];
-    const depthScale1 = visualPerspectiveFocalDepth / (visualPerspectiveFocalDepth - p1.z);
-    const depthScale2 = visualPerspectiveFocalDepth / (visualPerspectiveFocalDepth - p2.z);
-    ctx.moveTo(p1.x * orbScaleRadius * depthScale1 + centerX, p1.y * orbScaleRadius * depthScale1 + centerY);
-    ctx.lineTo(p2.x * orbScaleRadius * depthScale2 + centerX, p2.y * orbScaleRadius * depthScale2 + centerY);
-   }
-  }
-  ctx.stroke();
-  ctx.restore(); 
-
-  spherePoints3D.forEach((point) => {
-   const depthPerspective = visualPerspectiveFocalDepth / (visualPerspectiveFocalDepth - point.z);
-   const drawX = point.x * orbScaleRadius * depthPerspective + centerX;
-   const drawY = point.y * orbScaleRadius * depthPerspective + centerY;
-   const targetNodeRadius = 6 * depthPerspective;
-
-   nodePositions.push({ x: drawX, y: drawY, radius: targetNodeRadius + 12, path: point.app.path });
-
-   ctx.save();
-   ctx.fillStyle = point.app.name === "Plato Fields" ? "var(--green)" : "var(--pink)";
-   ctx.shadowBlur = point.z > 0 ? 10 : 0;
-   ctx.shadowColor = ctx.fillStyle;
-   
-   ctx.beginPath();
-   ctx.arc(drawX, drawY, targetNodeRadius, 0, Math.PI * 2);
-   ctx.fill();
-   ctx.restore();
-
-   if (point.z > -0.2) {
-    ctx.fillStyle = `rgba(0, 240, 255, ${Math.max(0.2, (point.z + 1) / 2)})`;
-    ctx.font = `bold ${Math.floor(14 * depthPerspective)}px monospace`; 
-    ctx.fillText(`[${point.app.name.toUpperCase()}]`, drawX + targetNodeRadius + 8, drawY + 4);
-   }
-  });
-
-  requestAnimationFrame(executeMatrixRenderLoop);
- }
-
- function executeMatrixRenderLoopElectric(timestamp) {
-  if (!ctx || !canvas) return;
-  
-  ctx.fillStyle = "rgba(2, 2, 5, 0.75)"; // Keep canvas clean without leaving marks
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  
-  renderBackgroundFadersAndBlueprints(timestamp);
-  
-  const centerX = canvas.width / 2;
-  const centerY = canvas.height / 2;
-  const orbScaleRadius = Math.min(centerX, centerY) * 0.85;
-  const visualPerspectiveFocalDepth = 3; 
-
-  nodePositions = [];
-  spherePoints3D.forEach(pt => rotate3DNodePoint(pt, angleX, angleY));
-
-  // HOVER DETECTION MODIFIER: Check if mouse is over any active node bounding zone
-  isHoveringNode = false;
-  if (!loadingOverlayActive) {
-   for (let i = 0; i < spherePoints3D.length; i++) {
-    const pt = spherePoints3D[i];
-    const depthPerspective = visualPerspectiveFocalDepth / (visualPerspectiveFocalDepth - pt.z);
-    const drawX = pt.x * orbScaleRadius * depthPerspective + centerX;
-    const drawY = pt.y * orbScaleRadius * depthPerspective + centerY;
-    const targetNodeRadius = 6 * depthPerspective;
-    
-    // Check if mouse coordinates fall inside the node selection circle pad
-    if (Math.hypot(mouseX - drawX, mouseY - drawY) <= targetNodeRadius + 12) {
-     isHoveringNode = true;
-     break;
-    }
-   }
-  }
-
-  // DYNAMIC COLOR MECHANICS: Snaps to fluoro green when hovering a link, uses shocking pink otherwise
-  ctx.save();
-  const electricColor = isHoveringNode ? "#00ffaa" : "#ff00aa"; 
-  ctx.strokeStyle = electricColor; 
-  
-  // Electrical surge runs only when nobody is present (timer not suspended)
-  const electricSurge = isTimerSuspended ? 0 : Math.random();
-  
-  ctx.lineWidth = 1.2 + (electricSurge * 1.8); 
-  ctx.shadowBlur = 10 + (electricSurge * 12); 
-  ctx.shadowColor = electricColor; 
-  ctx.globalAlpha = 0.8 + (electricSurge * 0.2);
-
-  ctx.beginPath();
-  for (let i = 0; i < spherePoints3D.length; i++) {
-   for (let j = i + 1; j < spherePoints3D.length; j++) {
-    const p1 = spherePoints3D[i], p2 = spherePoints3D[j];
-    const depthScale1 = visualPerspectiveFocalDepth / (visualPerspectiveFocalDepth - p1.z);
-    const depthScale2 = visualPerspectiveFocalDepth / (visualPerspectiveFocalDepth - p2.z);
-    ctx.moveTo(p1.x * orbScaleRadius * depthScale1 + centerX, p1.y * orbScaleRadius * depthScale1 + centerY);
-    ctx.lineTo(p2.x * orbScaleRadius * depthScale2 + centerX, p2.y * orbScaleRadius * depthScale2 + centerY);
-   }
-  }
-  ctx.stroke();
-  ctx.restore(); 
-
-  // Render individual Clickable Application Nodes
-  spherePoints3D.forEach((point) => {
-   const depthPerspective = visualPerspectiveFocalDepth / (visualPerspectiveFocalDepth - point.z);
-   const drawX = point.x * orbScaleRadius * depthPerspective + centerX;
-   const drawY = point.y * orbScaleRadius * depthPerspective + centerY;
-   const targetNodeRadius = 6 * depthPerspective;
-
-   nodePositions.push({ x: drawX, y: drawY, radius: targetNodeRadius + 12, path: point.app.path });
-
-   ctx.save();
-   // The node dots can also share the hover color reaction or keep their custom states
-   ctx.fillStyle = point.app.name === "Plato Fields" ? "var(--green)" : "var(--pink)";
-   ctx.shadowBlur = point.z > 0 ? 10 : 0;
-   ctx.shadowColor = ctx.fillStyle;
-   
-   ctx.beginPath();
-   ctx.arc(drawX, drawY, targetNodeRadius, 0, Math.PI * 2);
-   ctx.fill();
-   ctx.restore();
-
-   if (point.z > -0.2) {
-    ctx.fillStyle = `rgba(0, 240, 255, ${Math.max(0.2, (point.z + 1) / 2)})`;
-    ctx.font = `bold ${Math.floor(14 * depthPerspective)}px monospace`; 
-    ctx.fillText(`[${point.app.name.toUpperCase()}]`, drawX + targetNodeRadius + 8, drawY + 4);
-   }
-  });
-
-  requestAnimationFrame(executeMatrixRenderLoop);
- }
-
- function executeMatrixRenderLoop(timestamp) {
-  if (!ctx || !canvas) return;
-  
-  ctx.fillStyle = "rgba(2, 2, 5, 1)"; 
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  
-  renderBackgroundFadersAndBlueprints(timestamp);
-  
-  const centerX = canvas.width / 2;
-  const centerY = canvas.height / 2;
-  const orbScaleRadius = Math.min(centerX, centerY) * 0.55;
-  const visualPerspectiveFocalDepth = 3; 
-
-  nodePositions = [];
-  spherePoints3D.forEach(pt => rotate3DNodePoint(pt, angleX, angleY));
-
-  isHoveringNode = false;
-  if (!loadingOverlayActive) {
-   for (let i = 0; i < spherePoints3D.length; i++) {
-    const pt = spherePoints3D[i];
-    const depthPerspective = visualPerspectiveFocalDepth / (visualPerspectiveFocalDepth - pt.z);
-    const drawX = pt.x * orbScaleRadius * depthPerspective + centerX;
-    const drawY = pt.y * orbScaleRadius * depthPerspective + centerY;
-    const targetNodeRadius = 6 * depthPerspective;
-    
-    if (Math.hypot(mouseX - drawX, mouseY - drawY) <= targetNodeRadius + 12) {
-     isHoveringNode = true;
-     break;
-    }
-   }
-  }
-
-  // FIXED: Replaced CSS var strings with direct hex strings so HTML5 Canvas can read them!
-  ctx.save();
-  let electricColor = "#ff00aa"; // Stage 1: Unattended Red / Shocking Pink
-  
-  if (isTimerSuspended) {
-   electricColor = "#00ffaa"; // Stage 2: Mouse moves -> Snaps to Fluorescent Green
-   if (isHoveringNode) {
-    electricColor = "#00f0ff"; // Stage 3: Hovering a link -> Snaps to Neon Blue
-   }
-  }
-  
-  ctx.strokeStyle = electricColor;
-  
-  // Electrical crackle triggers ONLY when idle (nobody present)
-  const electricSurge = isTimerSuspended ? 0 : Math.random();
-  ctx.lineWidth = 1.2 + (electricSurge * 1.8); 
-  ctx.shadowBlur = 10 + (electricSurge * 12); 
-  ctx.shadowColor = electricColor;
-  ctx.globalAlpha = 0.8 + (electricSurge * 0.2);
-  
-  ctx.beginPath();
-  for (let i = 0; i < spherePoints3D.length; i++) {
-   for (let j = i + 1; j < spherePoints3D.length; j++) {
-    const p1 = spherePoints3D[i], p2 = spherePoints3D[j];
-    const depthScale1 = visualPerspectiveFocalDepth / (visualPerspectiveFocalDepth - p1.z);
-    const depthScale2 = visualPerspectiveFocalDepth / (visualPerspectiveFocalDepth - p2.z);
-    ctx.moveTo(p1.x * orbScaleRadius * depthScale1 + centerX, p1.y * orbScaleRadius * depthScale1 + centerY);
-    ctx.lineTo(p2.x * orbScaleRadius * depthScale2 + centerX, p2.y * orbScaleRadius * depthScale2 + centerY);
-   }
-  }
-  ctx.stroke();
-  ctx.restore(); 
-
-  spherePoints3D.forEach((point) => {
-   const depthPerspective = visualPerspectiveFocalDepth / (visualPerspectiveFocalDepth - point.z);
-   const drawX = point.x * orbScaleRadius * depthPerspective + centerX;
-   const drawY = point.y * orbScaleRadius * depthPerspective + centerY;
-   const targetNodeRadius = 6 * depthPerspective;
-
-   nodePositions.push({ x: drawX, y: drawY, radius: targetNodeRadius + 12, path: point.app.path });
-
-   ctx.save();
-   // Nodes preserve their default green/pink states or follow style rules
-   ctx.fillStyle = point.app.name === "Plato Fields" ? "#00ffaa" : "#ff00aa";
-   ctx.shadowBlur = point.z > 0 ? 10 : 0;
-   ctx.shadowColor = ctx.fillStyle;
-   
-   ctx.beginPath();
-   ctx.arc(drawX, drawY, targetNodeRadius, 0, Math.PI * 2);
-   ctx.fill();
-   ctx.restore();
-
-   if (point.z > -0.2) {
-    ctx.fillStyle = `rgba(0, 240, 255, ${Math.max(0.2, (point.z + 1) / 2)})`;
-    ctx.font = `bold ${Math.floor(14 * depthPerspective)}px monospace`; 
-    ctx.fillText(`[${point.app.name.toUpperCase()}]`, drawX + targetNodeRadius + 8, drawY + 4);
-   }
-  });
-
-  requestAnimationFrame(executeMatrixRenderLoop);
- } 
- 
- function adaptCanvasLimits() {
-  const container = document.getElementById("canvas-viewport-container");
-  if (canvas && container) {
-   canvas.width = container.clientWidth; canvas.height = container.clientHeight;
-  }
- }
-
- function triggerTerminalJump(targetPath) {
-  clearInterval(timerInterval); clearInterval(textInterval);
-  document.body.classList.add('alarm-active');
-  const finalPath = targetPath || APP_POOL[Math.floor(Math.random() * APP_POOL.length)].path;
-  window.location.href = finalPath;
- }
-
- function freezeCounterMechanism() {
-  if (isTimerSuspended || loadingOverlayActive) return;
-  isTimerSuspended = true; 
-  clearInterval(timerInterval);
-  
-  const statusDisplay = document.getElementById("countdown-status-node");
-  if (statusDisplay) {
-   statusDisplay.innerText = "y o u   g o t   p r e s e n c e  h e r e  &  n o w !";
-   statusDisplay.style.color = "var(--green)";
-  }
- }
-
- function initPortalEngine() {
-  buildHtmlNavigationBarUI();
-  initialize3DOrbMeshCoordinates();
-  initializeStaticBlueprintLayout();
-  
-  canvas = document.getElementById("matrix-vis");
-  if (canvas) {
-   ctx = canvas.getContext("2d"); adaptCanvasLimits();
-   requestAnimationFrame(executeMatrixRenderLoop);
-
-  canvas.addEventListener("click", (event) => {
-    if (loadingOverlayActive) return;
-    const rect = canvas.getBoundingClientRect();
-    const mX = event.clientX - rect.left, mY = event.clientY - rect.top;
-    
-    for (let node of nodePositions) {
-     if (Math.hypot(mX - node.x, mY - node.y) <= node.radius) {
-      triggerTerminalJump(node.path); break;
-     }
-    }
-   });
-   
-  // Update mouse position coordinates continuously on canvas movement
-  canvas.addEventListener('mousemove', (event) => {
-   const rect = canvas.getBoundingClientRect();
-   mouseX = event.clientX - rect.left;
-   mouseY = event.clientY - rect.top;
-   
-   // Keep firing the timer freeze function natively
-   freezeCounterMechanism();
-  });
-
-  }
-
-  //window.addEventListener('mousemove', freezeCounterMechanism);
-  canvas.addEventListener('mousemove', (event) => {
-   const rect = canvas.getBoundingClientRect();
-   mouseX = event.clientX - rect.left;
-   mouseY = event.clientY - rect.top;
-   freezeCounterMechanism();
-  });
-  const loaderText = document.querySelector('.loading-text');
-  
-  textInterval = setInterval(() => {
-   if (loaderText && textCycleIndex < DRAMATIC_WORDS.length) {
-    loaderText.innerText = DRAMATIC_WORDS[textCycleIndex]; textCycleIndex++;
-   } else {
-    clearInterval(textInterval); loadingOverlayActive = false;
-    const loader = document.getElementById('loading-universe');
-    if (loader) {
-     loader.style.opacity = '0'; setTimeout(() => { loader.style.visibility = 'hidden'; }, 2000);
-    }
-    startIdleCountdownEngine();
-   }
-  }, 1200);
-
-  function startIdleCountdownEngine() {
-   const statusDisplay = document.getElementById("countdown-status-node");
-   timerInterval = setInterval(() => {
-    if (isTimerSuspended) return;
-    countdownTime--;
-    if (statusDisplay) statusDisplay.innerText = `[ A  U  T  O   -   R E D I R E C T  TIMELINE IN: ${countdownTime}s]`;
-    if (countdownTime <= 0) triggerTerminalJump();
-   }, 1000);
-  }
- }
-
- window.addEventListener("resize", adaptCanvasLimits);
- document.addEventListener("DOMContentLoaded", initPortalEngine);
-</script>
-  <header style="border-top: 1px solid var(--yellow); border-bottom: none; padding-top: 4px; padding-bottom: 0; margin-top: 8px; margin-bottom: 0;">
-    <div style="font-family: monospace; letter-spacing: 12px;font-size: 0.75rem; color: var(--green);"><h3>E  x  i  s t e n z .  .    .    . d i g i t a l . . . ... | . P . L . A . T . O .</h311111111111></div>
-    <div id="countdown-status-node" style="font-family: monospace; font-size: 0.75rem; color: var(--pink);">T I M E   I S   I N V I N C I B L E</div>
-  </header>
 
 </body>
 </html>
