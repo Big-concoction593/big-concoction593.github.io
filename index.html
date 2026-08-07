@@ -296,7 +296,7 @@
   requestAnimationFrame(executeMatrixRenderLoop);
  }
 
- function executeMatrixRenderLoop(timestamp) {
+ function executeMatrixRenderLoopElectric(timestamp) {
   if (!ctx || !canvas) return;
   
   ctx.fillStyle = "rgba(2, 2, 5, 1)"; // Keep canvas clean without leaving marks
@@ -385,6 +385,103 @@
 
   requestAnimationFrame(executeMatrixRenderLoop);
  }
+
+ function executeMatrixRenderLoop(timestamp) {
+  if (!ctx || !canvas) return;
+  
+  ctx.fillStyle = "rgba(2, 2, 5, 1)"; // Keep canvas clean without leaving marks
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  renderBackgroundFadersAndBlueprints(timestamp);
+  
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+  const orbScaleRadius = Math.min(centerX, centerY) * 0.55;
+  const visualPerspectiveFocalDepth = 3; 
+
+  nodePositions = [];
+  spherePoints3D.forEach(pt => rotate3DNodePoint(pt, angleX, angleY));
+
+  // HOVER DETECTION MODIFIER: Check if mouse is over any active node bounding zone
+  isHoveringNode = false;
+  if (!loadingOverlayActive) {
+   for (let i = 0; i < spherePoints3D.length; i++) {
+    const pt = spherePoints3D[i];
+    const depthPerspective = visualPerspectiveFocalDepth / (visualPerspectiveFocalDepth - pt.z);
+    const drawX = pt.x * orbScaleRadius * depthPerspective + centerX;
+    const drawY = pt.y * orbScaleRadius * depthPerspective + centerY;
+    const targetNodeRadius = 6 * depthPerspective;
+    
+    // Check if mouse coordinates fall inside the node selection circle pad
+    if (Math.hypot(mouseX - drawX, mouseY - drawY) <= targetNodeRadius + 12) {
+     isHoveringNode = true;
+     break;
+    }
+   }
+  }
+
+  // DYNAMIC COLOR MECHANICS: Snaps to fluoro green when hovering a link, uses shocking pink otherwise
+  // DYNAMIC THREE-STAGE COLOR ENGINE
+  ctx.save();
+  
+  // 1. Determine line color: Neon Blue (#00f0ff) on node hover, Fluorescent Green (#00ffaa) otherwise
+  let electricColor = "#00ffaa"; // Default stage 1 & 2
+  if (isHoveringNode) {
+   electricColor = "#00f0ff"; // Stage 3: Snap to Neon Blue when a cube point link is touched!
+  }
+  ctx.strokeStyle = electricColor; 
+  
+  // 2. Electrical crackle logic matches your presence variables
+  const electricSurge = isTimerSuspended ? 0 : Math.random();
+  
+  ctx.lineWidth = 1.2 + (electricSurge * 1.8); 
+  ctx.shadowBlur = 10 + (electricSurge * 12); 
+  ctx.shadowColor = electricColor; // Glow matches the current active stage color perfectly
+  ctx.globalAlpha = 0.8 + (electricSurge * 0.2);
+
+  ctx.beginPath();
+  for (let i = 0; i < spherePoints3D.length; i++) {
+   for (let j = i + 1; j < spherePoints3D.length; j++) {
+    const p1 = spherePoints3D[i], p2 = spherePoints3D[j];
+    const depthScale1 = visualPerspectiveFocalDepth / (visualPerspectiveFocalDepth - p1.z);
+    const depthScale2 = visualPerspectiveFocalDepth / (visualPerspectiveFocalDepth - p2.z);
+    ctx.moveTo(p1.x * orbScaleRadius * depthScale1 + centerX, p1.y * orbScaleRadius * depthScale1 + centerY);
+    ctx.lineTo(p2.x * orbScaleRadius * depthScale2 + centerX, p2.y * orbScaleRadius * depthScale2 + centerY);
+   }
+  }
+  ctx.stroke();
+  ctx.restore();
+
+
+  // Render individual Clickable Application Nodes
+  spherePoints3D.forEach((point) => {
+   const depthPerspective = visualPerspectiveFocalDepth / (visualPerspectiveFocalDepth - point.z);
+   const drawX = point.x * orbScaleRadius * depthPerspective + centerX;
+   const drawY = point.y * orbScaleRadius * depthPerspective + centerY;
+   const targetNodeRadius = 6 * depthPerspective;
+
+   nodePositions.push({ x: drawX, y: drawY, radius: targetNodeRadius + 12, path: point.app.path });
+
+   ctx.save();
+   // The node dots can also share the hover color reaction or keep their custom states
+   ctx.fillStyle = point.app.name === "Plato Fields" ? "var(--green)" : "var(--pink)";
+   ctx.shadowBlur = point.z > 0 ? 10 : 0;
+   ctx.shadowColor = ctx.fillStyle;
+   
+   ctx.beginPath();
+   ctx.arc(drawX, drawY, targetNodeRadius, 0, Math.PI * 2);
+   ctx.fill();
+   ctx.restore();
+
+   if (point.z > -0.2) {
+    ctx.fillStyle = `rgba(0, 240, 255, ${Math.max(0.2, (point.z + 1) / 2)})`;
+    ctx.font = `bold ${Math.floor(14 * depthPerspective)}px monospace`; 
+    ctx.fillText(`[${point.app.name.toUpperCase()}]`, drawX + targetNodeRadius + 8, drawY + 4);
+   }
+  });
+
+  requestAnimationFrame(executeMatrixRenderLoop);
+ }
  
  
  function adaptCanvasLimits() {
@@ -423,17 +520,16 @@
    ctx = canvas.getContext("2d"); adaptCanvasLimits();
    requestAnimationFrame(executeMatrixRenderLoop);
    
-   canvas.addEventListener("click", (event) => {
-    if (loadingOverlayActive) return;
-    const rect = canvas.getBoundingClientRect();
-    const mX = event.clientX - rect.left, mY = event.clientY - rect.top;
-    
-    for (let node of nodePositions) {
-     if (Math.hypot(mX - node.x, mY - node.y) <= node.radius) {
-      triggerTerminalJump(node.path); break;
-     }
-    }
-   });
+  // Update mouse position coordinates continuously on canvas movement
+  canvas.addEventListener('mousemove', (event) => {
+   const rect = canvas.getBoundingClientRect();
+   mouseX = event.clientX - rect.left;
+   mouseY = event.clientY - rect.top;
+   
+   // Keep firing the timer freeze function natively
+   freezeCounterMechanism();
+  });
+
   }
 
   //window.addEventListener('mousemove', freezeCounterMechanism);
@@ -473,7 +569,7 @@
  document.addEventListener("DOMContentLoaded", initPortalEngine);
 </script>
   <header style="border-top: 1px solid var(--yellow); border-bottom: none; padding-top: 4px; padding-bottom: 0; margin-top: 8px; margin-bottom: 0;">
-    <div style="font-family: monospace; font-size: 0.75rem; color: var(--green);"><h1>E  x  i  s t e n z .  .    .    . d i g i t a l . | . P . L . A . T . O .</h1></div>
+    <div style="font-family: monospace; letter-spacing: 12px;font-size: 0.75rem; color: var(--green);"><h1>E  x  i  s t e n z .  .    .    . d i g i t a l . . . ... | . P . L . A . T . O .</h1></div>
     <div id="countdown-status-node" style="font-family: monospace; font-size: 0.75rem; color: var(--pink);">T I M E   I S   I N V I N C I B L E</div>
   </header>
 
